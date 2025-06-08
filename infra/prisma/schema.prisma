@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String         @id @default(uuid())
+  email         String         @unique
+  name          String?
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  reflections   Reflection[]
+  voiceSettings VoiceSettings?
+}
+
+model Reflection {
+  id        String   @id @default(uuid())
+  userId    String
+  content   String
+  audioUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model VoiceSettings {
+  id                String  @id @default(uuid())
+  userId           String  @unique
+  elevenlabsVoiceId String?
+  preferredLanguage String  @default("en")
+  user             User    @relation(fields: [userId], references: [id])
+}
+
+model Scripture {
+  id          String   @id @default(uuid())
+  name        String
+  chapter     Int
+  verse       Int
+  content     String
+  translation String?
+  embeddings  Json?    // Store vector embeddings for semantic search
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([name, chapter, verse])
+} 

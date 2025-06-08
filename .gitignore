@@ -1,0 +1,89 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Yarn Berry
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+venv/
+.env
+
+# Build
+dist/
+build/
+*.tsbuildinfo
+.rollup.cache/
+storybook-static/
+
+# Testing
+coverage/
+.nyc_output/
+junit.xml
+
+# Mobile
+.expo/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+ios/Pods/
+android/.gradle/
+android/app/build/
+ios/build/
+
+# React Native specific
+.bundle/
+vendor/
+*.hprof
+.cxx/
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Local env files
+.env*.local
+.env.development
+.env.test
+.env.production
+
+# Database
+*.sqlite
+*.db
+
+# Docker volumes
+postgres_data/
+qdrant_data/
+
+# Cache
+.cache/
+.expo/
+.next/
+.nuxt/ 
