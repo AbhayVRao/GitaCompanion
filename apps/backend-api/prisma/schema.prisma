@@ -1,0 +1,52 @@
+// This is your Prisma schema file
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String          @id @default(cuid())
+  email         String         @unique
+  createdAt     DateTime       @default(now())
+  reflections   Reflection[]
+  voiceSettings VoiceSettings?
+
+  @@map("users")
+}
+
+model Reflection {
+  id         String   @id @default(cuid())
+  userId     String
+  rawText    String
+  aiResponse String   @db.Text
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id])
+
+  @@map("reflections")
+}
+
+model Scripture {
+  id        String   @id @default(cuid())
+  chapter   Int
+  verse     Int
+  sanskrit  String   @db.Text
+  english   String   @db.Text
+  speaker   String
+  createdAt DateTime @default(now())
+
+  @@map("scriptures")
+}
+
+model VoiceSettings {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  characterName String
+  voiceId       String
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@map("voice_settings")
+} 

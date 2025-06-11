@@ -6,6 +6,7 @@ import { RootStackParamList } from './src/navigation/types';
 import { OnboardingScreen } from './src/screens/OnboardingScreen';
 import { ChapterReaderScreen } from './src/screens/ChapterReaderScreen';
 import { ReflectionScreen } from './src/screens/ReflectionScreen';
+import { ApiTest } from './src/components/ApiTest';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -28,7 +29,10 @@ export default function App() {
         <Stack.Screen
           name="Onboarding"
           component={OnboardingScreen}
-          options={{ headerShown: false }}
+          options={{ 
+            headerShown: false,
+            headerRight: () => <ApiTest />
+          }}
         />
         <Stack.Screen
           name="ChapterReader"

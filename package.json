@@ -1,38 +1,14 @@
 {
-  "name": "gita-companion",
-  "version": "0.1.0",
+  "name": "@gita-companion/root",
   "private": true,
-  "engines": {
-    "node": ">=22.14.0",
-    "npm": ">=10.0.0"
-  },
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
+  "packageManager": "yarn@4.9.2",
   "scripts": {
-    "dev:mobile": "cd apps/mobile-app && npm run start",
-    "dev:api": "cd apps/backend-api && npm run dev",
-    "build": "npm run build --workspaces",
-    "test": "npm run test --workspaces",
-    "clean": "rm -rf node_modules && npm run clean --workspaces",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
-    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
-    "postinstall": "npm run build --workspaces",
-    "setup": "node ./scripts/setup.js"
-  },
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "eslint": "^8.0.0",
-    "eslint-config-prettier": "^9.0.0",
-    "eslint-plugin-prettier": "^5.0.0",
-    "eslint-plugin-react": "^7.0.0",
-    "eslint-plugin-react-hooks": "^4.0.0",
-    "eslint-plugin-react-native": "^4.0.0",
-    "prettier": "^3.0.0",
-    "turbo": "^1.10.0",
-    "typescript": "^5.0.0"
+    "backend:dev": "yarn workspace @gita-companion/backend-api dev",
+    "backend:build": "yarn workspace @gita-companion/backend-api build",
+    "backend:start": "yarn workspace @gita-companion/backend-api start"
   }
-} 
+}

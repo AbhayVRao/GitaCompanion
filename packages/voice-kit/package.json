@@ -9,11 +9,11 @@
     "dev": "tsc -w"
   },
   "dependencies": {
-    "elevenlabs-node": "^1.0.0",
-    "axios": "^1.0.0"
+    "axios": "^1.0.0",
+    "elevenlabs-node": "^1.0.0"
   },
   "devDependencies": {
-    "typescript": "^5.0.0",
-    "@types/node": "^20.0.0"
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
   }
-} 
+}

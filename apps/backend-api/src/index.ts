@@ -1,12 +1,22 @@
 import express from 'express';
+import cors from 'cors';
+import reflectionRoutes from './routes/reflection';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.get('/', (req, res) => {
-  res.json({ message: 'Gita Companion API' });
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Routes
+app.use('/reflection', reflectionRoutes);
+
+// Health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok' });
 });
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running at http://localhost:${port}`);
 }); 
