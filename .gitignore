@@ -18,7 +18,6 @@ __pycache__/
 .Python
 env/
 venv/
-.env
 
 # Build
 dist/
@@ -68,11 +67,15 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Local env files
-.env*.local
-.env.development
-.env.test
-.env.production
+# Environment files
+# Ignore all .env files by default
+.env
+.env.*
+# But track example files
+!.env.example
+# And track development configs
+!apps/mobile-app/.env
+!apps/backend-api/.env
 
 # Database
 *.sqlite
