@@ -4,12 +4,14 @@ module.exports = {
     slug: 'gita-companion',
     version: '1.0.0',
     orientation: 'portrait',
-    icon: './assets/icon.png',
+    // Comment out icon until we have proper assets
+    // icon: './assets/icon.png',
     userInterfaceStyle: 'light',
     splash: {
-      image: './assets/splash.png',
+      // Use a solid color instead of image for now
+      // image: './assets/splash.png',
       resizeMode: 'contain',
-      backgroundColor: '#ffffff'
+      backgroundColor: '#F7FAFC'
     },
     assetBundlePatterns: [
       '**/*'
@@ -20,14 +22,28 @@ module.exports = {
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: './assets/adaptive-icon.png',
-        backgroundColor: '#ffffff'
+        // Comment out foreground image until we have proper assets
+        // foregroundImage: './assets/adaptive-icon.png',
+        backgroundColor: '#F7FAFC'
       },
       package: 'com.gitacompanion.app'
     },
     extra: {
-      apiUrl: process.env.API_URL || 'http://localhost:3000',
+      // Use explicit IP address instead of localhost for device testing
+      apiUrl: process.env.API_URL || 'http://10.18.1.13:3000',
       nodeEnv: process.env.NODE_ENV || 'development',
+    },
+    // Add dev client config
+    developmentClient: {
+      silentLaunch: true
+    },
+    // Add additional development settings
+    updates: {
+      fallbackToCacheTimeout: 0
+    },
+    // Ensure Metro can connect
+    developer: {
+      tool: 'expo-cli'
     }
   }
 }; 

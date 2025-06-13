@@ -1,40 +1,83 @@
-import React from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Pressable, ScrollView, TextInput, ActivityIndicator } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../navigation/types';
+import { api } from '../lib/api';
 
 type Props = NativeStackScreenProps<RootStackParamList, 'Reflection'>;
 
 export const ReflectionScreen: React.FC<Props> = ({ navigation }) => {
+  const [reflectionText, setReflectionText] = useState('');
+  const [aiResponse, setAiResponse] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState('');
+
+  const handleSubmitReflection = async () => {
+    if (!reflectionText.trim()) {
+      setError('Please enter your reflection');
+      return;
+    }
+
+    setIsLoading(true);
+    setError('');
+
+    try {
+      const response = await api.postReflection({
+        userId: 'cmbsjnlce0000sb7a5pp6n1jv', // Using test user ID
+        text: reflectionText,
+      });
+      setAiResponse(response.aiResponse);
+    } catch (err) {
+      setError('Failed to get reflection. Please try again.');
+      console.error('Reflection error:', err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollView}>
         <View style={styles.header}>
           <Text style={styles.title}>Daily Reflection</Text>
-          <Text style={styles.subtitle}>Based on Bhagavad Gita 1.1</Text>
+          <Text style={styles.subtitle}>Share your thoughts and receive guidance</Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Your Context</Text>
-          <Text style={styles.text}>
-            Share your current situation or question...
-          </Text>
+          <Text style={styles.sectionTitle}>Your Reflection</Text>
+          <TextInput
+            style={styles.input}
+            multiline
+            numberOfLines={4}
+            placeholder="Share your current situation or question..."
+            value={reflectionText}
+            onChangeText={setReflectionText}
+          />
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
         </View>
 
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Guidance</Text>
-          <Text style={styles.text}>
-            AI-powered spiritual guidance will appear here, drawing wisdom from the verses and applying them to your context.
-          </Text>
-        </View>
+        {isLoading ? (
+          <View style={styles.loadingContainer}>
+            <ActivityIndicator size="large" color="#4A5568" />
+            <Text style={styles.loadingText}>Generating reflection...</Text>
+          </View>
+        ) : aiResponse ? (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>Guidance</Text>
+            <Text style={styles.text}>{aiResponse}</Text>
+          </View>
+        ) : null}
       </ScrollView>
 
       <View style={styles.footer}>
         <Pressable
-          style={styles.button}
-          onPress={() => navigation.navigate('Onboarding')}
+          style={[styles.button, !reflectionText.trim() && styles.buttonDisabled]}
+          onPress={handleSubmitReflection}
+          disabled={!reflectionText.trim() || isLoading}
         >
-          <Text style={styles.buttonText}>Start New Reflection</Text>
+          <Text style={styles.buttonText}>
+            {isLoading ? 'Processing...' : 'Get Guidance'}
+          </Text>
         </Pressable>
       </View>
     </View>
@@ -77,6 +120,15 @@ const styles = StyleSheet.create({
     lineHeight: 24,
     color: '#2D3748',
   },
+  input: {
+    borderWidth: 1,
+    borderColor: '#E2E8F0',
+    borderRadius: 8,
+    padding: 12,
+    fontSize: 16,
+    minHeight: 100,
+    textAlignVertical: 'top',
+  },
   footer: {
     padding: 20,
     borderTopWidth: 1,
@@ -88,9 +140,25 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     alignItems: 'center',
   },
+  buttonDisabled: {
+    backgroundColor: '#A0AEC0',
+  },
   buttonText: {
     color: '#fff',
     fontSize: 18,
     fontWeight: '600',
+  },
+  errorText: {
+    color: '#E53E3E',
+    marginTop: 8,
+  },
+  loadingContainer: {
+    padding: 20,
+    alignItems: 'center',
+  },
+  loadingText: {
+    marginTop: 12,
+    fontSize: 16,
+    color: '#4A5568',
   },
 }); 
