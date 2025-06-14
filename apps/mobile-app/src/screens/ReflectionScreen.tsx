@@ -54,6 +54,14 @@ export const ReflectionScreen: React.FC<Props> = ({ navigation }) => {
             onChangeText={setReflectionText}
           />
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
+          {/* Show AI guidance below the input */}
+          {aiResponse ? (
+            <View style={{ marginTop: 16 }}>
+              <Text style={{ fontWeight: 'bold', marginBottom: 4 }}>Guidance:</Text>
+              <Text style={{ color: '#2D3748' }}>{aiResponse}</Text>
+            </View>
+          ) : null}
         </View>
 
         {isLoading ? (

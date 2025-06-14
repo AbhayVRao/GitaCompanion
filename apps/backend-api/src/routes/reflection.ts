@@ -8,12 +8,11 @@ const prisma = new PrismaClient();
 
 // Input validation schema
 const reflectionInputSchema = z.object({
+  userId: z.string(),
   text: z.string()
     .min(10, 'Reflection must be at least 10 characters long')
     .max(1000, 'Reflection cannot exceed 1000 characters')
     .trim(),
-  chapterId: z.string().optional(),
-  verseId: z.string().optional(),
 });
 
 // Error response interface
@@ -71,11 +70,10 @@ router.post('/', async (req, res) => {
     console.log('Creating reflection in database...');
     const reflection = await prisma.reflection.create({
       data: {
+        userId: validatedInput.userId,
         text: validatedInput.text,
-        aiResponse,
-        guidance: aiResponse, // Use the actual AI response
-        chapterId: validatedInput.chapterId,
-        verseId: validatedInput.verseId,
+        aiResponse: aiResponse,
+        guidance: aiResponse,
       },
     });
     console.log('Reflection created:', reflection);
