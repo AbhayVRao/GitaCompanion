@@ -2,40 +2,71 @@
 
 A Hindu lifestyle application powered by AI that provides personalized spiritual guidance, voice interactions, and reflections based on sacred texts.
 
+## Current Functionality
+
+### Backend API (Express + TypeScript)
+- Health check endpoint (`/health`)
+- Reflection endpoint (`/reflection`) for AI-powered guidance
+- PostgreSQL database with Prisma ORM
+- Basic error handling and CORS configuration
+- Development environment setup with Docker
+
+### Mobile App (React Native + Expo)
+- Onboarding screen with "Get Started" flow
+- Chapter reader showing Bhagavad Gita verses
+- Reflection screen with text input and AI guidance
+- API integration with backend
+- Environment configuration support
+
 ## Project Structure
 
 ```
-/apps
-  /mobile-app        - React Native (Expo) mobile application
-  /backend-api       - TypeScript-based API server with Prisma
-/llm-engine          - Python AI services (Whisper, embeddings, knowledge graph)
-/packages
-  /voice-kit         - ElevenLabs TTS integration and audio utilities
-  /reflection-logic  - LLM prompting and memory management
-  /shared           - Shared TypeScript types and utilities
-/infra
-  /prisma           - Database schema and migrations
-  /scripts          - Development and deployment tools
+/gita-companion
+├── apps/
+│   ├── backend-api/           # Express + TypeScript backend
+│   │   ├── src/
+│   │   │   ├── routes/       # API endpoints
+│   │   │   ├── lib/         # Business logic
+│   │   │   └── index.ts     # Main server file
+│   │   ├── prisma/          # Database schema and migrations
+│   │   └── package.json
+│   │
+│   └── mobile-app/          # React Native + Expo app
+│       ├── src/
+│       │   ├── screens/     # App screens
+│       │   ├── components/  # Reusable components
+│       │   ├── lib/        # API client and utilities
+│       │   └── navigation/ # Navigation configuration
+│       └── package.json
+│
+├── packages/                # Shared packages (future)
+├── infra/                  # Infrastructure and Docker configs
+└── package.json           # Root package.json for workspaces
 ```
 
-## Core Technologies
+## Tech Stack
 
-- **Frontend**: React Native (Expo) with TypeScript
-- **Backend API**: Express.js/tRPC with Prisma ORM
-- **AI & Voice**:
-  - OpenAI GPT-4/Claude for reflections
-  - Whisper for speech-to-text
-  - ElevenLabs for text-to-speech
-  - Qdrant for vector storage
-- **Database**: PostgreSQL
-- **Future**: Neo4j knowledge graph integration
+### Backend
+- Node.js with TypeScript
+- Express.js for API
+- Prisma ORM for database
+- PostgreSQL database
+- Docker for development
+- Yarn workspaces for monorepo
 
-## Development Requirements
+### Mobile
+- React Native with Expo
+- TypeScript
+- React Navigation
+- Expo Constants for env
+- React Native Dotenv
 
-- Node.js 22.14.0 (or use nvm)
-- Python 3.11+
-- Docker & Docker Compose
-- Xcode (iOS) / Android Studio (Android)
+### Development Tools
+- Yarn 4.9.2 with Corepack
+- TypeScript
+- ESLint
+- Docker
+- Git
 
 ## Getting Started
 
@@ -49,87 +80,95 @@ A Hindu lifestyle application powered by AI that provides personalized spiritual
    node -v  # Should show v22.14.0
    ```
 
-2. **Run the setup script**:
+2. **Install dependencies**:
    ```bash
-   # This will:
-   # - Check Node.js version
-   # - Clean existing installations
-   # - Install all dependencies
-   # - Build all packages
-   node scripts/setup.js
+   # Install Yarn Berry
+   corepack enable
+   yarn set version 4.9.2
+   
+   # Install dependencies
+   yarn install
    ```
 
 3. **Set up environment variables**:
    ```bash
-   # Root level
-   cp .env.example .env
-   
    # Backend API
    cp apps/backend-api/.env.example apps/backend-api/.env
    
    # Mobile app
    cp apps/mobile-app/.env.example apps/mobile-app/.env
-   
-   # LLM engine
-   cp llm-engine/.env.example llm-engine/.env
    ```
 
 4. **Start development services**:
    ```bash
-   # Start database services
+   # Start database
    docker-compose up -d
    
    # In separate terminals:
-   npm run dev:api    # Start backend API
-   npm run dev:mobile # Start mobile app
+   cd apps/backend-api && yarn dev    # Start backend API
+   cd apps/mobile-app && yarn dev     # Start mobile app
    ```
 
-## Development Scripts
+## Development Workflow
 
-- `npm run dev:mobile` - Start the Expo development server
-- `npm run dev:api` - Start the backend API in development mode
-- `npm run build` - Build all packages
-- `npm run lint` - Run ESLint checks
-- `npm run lint:fix` - Fix ESLint issues
-- `npm run format` - Format code with Prettier
+1. **Backend Development**:
+   - API endpoints in `apps/backend-api/src/routes/`
+   - Database schema in `apps/backend-api/prisma/schema.prisma`
+   - Run migrations: `yarn prisma migrate dev`
 
-## Environment Variables
+2. **Mobile Development**:
+   - Screens in `apps/mobile-app/src/screens/`
+   - Components in `apps/mobile-app/src/components/`
+   - API client in `apps/mobile-app/src/lib/api.ts`
 
-Required API keys and configurations:
-- OpenAI API Key
-- ElevenLabs API Key
-- (Optional) Claude API Key
-- PostgreSQL connection string
-- Qdrant connection details
+## Current Features
 
-## Project Dependencies
+### Backend
+- RESTful API endpoints
+- PostgreSQL database with Prisma
+- Basic error handling
+- CORS configuration
+- Development environment setup
 
-The monorepo uses npm workspaces to manage dependencies:
-- `/apps/*` - Application packages
-- `/packages/*` - Shared internal packages
-- Root level dependencies are development tools only
+### Mobile App
+- Onboarding flow
+- Chapter reader
+- Reflection input
+- API integration
+- Environment configuration
+
+## Next Steps
+
+### Backend
+1. Authentication & Authorization
+2. Input validation
+3. Error handling
+4. API documentation
+5. Testing setup
+
+### Mobile
+1. User authentication
+2. Error handling
+3. Loading states
+4. Offline support
+5. UI/UX improvements
 
 ## Troubleshooting
 
-If you encounter issues:
-
-1. **Node.js version mismatch**:
+1. **Database Issues**:
    ```bash
-   nvm use 22.14.0
-   node scripts/setup.js
+   # Reset database
+   yarn prisma migrate reset
    ```
 
-2. **Clean installation**:
-   ```bash
-   # Remove all dependencies and lock files
-   node scripts/setup.js
-   ```
+2. **Mobile App Issues**:
+   - Clear Metro bundler cache: `yarn expo start --clear`
+   - Check API URL in `.env`
 
-3. **Build errors**:
-   ```bash
-   # Rebuild all packages
-   npm run build
-   ```
+3. **Backend Issues**:
+   - Check database connection
+   - Verify environment variables
+   - Check logs for errors
 
 ## License
 
