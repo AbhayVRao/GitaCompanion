@@ -20,11 +20,14 @@ model User {
 
 model Reflection {
   id         String   @id @default(cuid())
-  userId     String
-  rawText    String
+  text       String   @db.Text
+  guidance   String   @db.Text
   aiResponse String   @db.Text
+  chapterId  String?
+  verseId    String?
   createdAt  DateTime @default(now())
-  user       User     @relation(fields: [userId], references: [id])
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id])
 
   @@map("reflections")
 }
