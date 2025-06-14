@@ -1,175 +1,124 @@
 # Gita Companion
 
-A Hindu lifestyle application powered by AI that provides personalized spiritual guidance, voice interactions, and reflections based on sacred texts.
+Gita Companion is an app that gives you personalized spiritual guidance, voice interactions, and reflections based on sacred Hindu texts, powered by AI.
 
-## Current Functionality
+---
 
-### Backend API (Express + TypeScript)
-- Health check endpoint (`/health`)
-- Reflection endpoint (`/reflection`) for AI-powered guidance
-- PostgreSQL database with Prisma ORM
-- Basic error handling and CORS configuration
-- Development environment setup with Docker
+## What's Included
 
-### Mobile App (React Native + Expo)
-- Onboarding screen with "Get Started" flow
-- Chapter reader showing Bhagavad Gita verses
-- Reflection screen with text input and AI guidance
-- API integration with backend
-- Environment configuration support
+- **Mobile App:** For writing reflections and getting AI-powered guidance.
+- **Backend:** The "brain" that processes your reflections and stores them.
+- **Database:** Where all your data is safely kept.
 
-## Project Structure
+---
 
-```
-/gita-companion
-├── apps/
-│   ├── backend-api/           # Express + TypeScript backend
-│   │   ├── src/
-│   │   │   ├── routes/       # API endpoints
-│   │   │   ├── lib/         # Business logic
-│   │   │   └── index.ts     # Main server file
-│   │   ├── prisma/          # Database schema and migrations
-│   │   └── package.json
-│   │
-│   └── mobile-app/          # React Native + Expo app
-│       ├── src/
-│       │   ├── screens/     # App screens
-│       │   ├── components/  # Reusable components
-│       │   ├── lib/        # API client and utilities
-│       │   └── navigation/ # Navigation configuration
-│       └── package.json
-│
-├── packages/                # Shared packages (future)
-├── infra/                  # Infrastructure and Docker configs
-└── package.json           # Root package.json for workspaces
+## How to Set Up and Run Everything
+
+### 1. **Install the Prerequisites**
+
+You (or your helper) will need to install these free tools:
+- **Node.js** (version 22.14.0)
+- **Yarn** (for managing packages)
+- **Docker** (for running the database)
+- **Expo Go** (for running the mobile app on your phone)
+
+*If you don't know how to install these, ask your technical partner or see the official websites for instructions.*
+
+---
+
+### 2. **Get the Project Ready**
+
+Open a terminal and run these commands one by one:
+
+```bash
+# Download all the code libraries you need
+yarn install
+
+# Copy the example settings files so you can add your own info
+cp apps/backend-api/.env.example apps/backend-api/.env
+cp apps/mobile-app/.env.example apps/mobile-app/.env
 ```
 
-## Tech Stack
+---
 
-### Backend
-- Node.js with TypeScript
-- Express.js for API
-- Prisma ORM for database
-- PostgreSQL database
-- Docker for development
-- Yarn workspaces for monorepo
+### 3. **Set Up Your Environment Variables**
 
-### Mobile
-- React Native with Expo
-- TypeScript
-- React Navigation
-- Expo Constants for env
-- React Native Dotenv
+- Open the `.env` files you just created in both `apps/backend-api` and `apps/mobile-app`.
+- Fill in any missing information, like API keys or your computer's IP address.
+- **Do not share these files publicly!**
 
-### Development Tools
-- Yarn 4.9.2 with Corepack
-- TypeScript
-- ESLint
-- Docker
-- Git
+---
 
-## Getting Started
+### 4. **Start the Database**
 
-1. **Set up Node.js environment**:
-   ```bash
-   # Using nvm (recommended)
-   nvm install 22.14.0
-   nvm use 22.14.0
-   
-   # Verify version
-   node -v  # Should show v22.14.0
-   ```
+```bash
+cd infra
+docker-compose up -d
+```
+This will start the database in the background.
 
-2. **Install dependencies**:
-   ```bash
-   # Install Yarn Berry
-   corepack enable
-   yarn set version 4.9.2
-   
-   # Install dependencies
-   yarn install
-   ```
+---
 
-3. **Set up environment variables**:
-   ```bash
-   # Backend API
-   cp apps/backend-api/.env.example apps/backend-api/.env
-   
-   # Mobile app
-   cp apps/mobile-app/.env.example apps/mobile-app/.env
-   ```
+### 5. **Prepare the Database**
 
-4. **Start development services**:
-   ```bash
-   # Start database
-   docker-compose up -d
-   
-   # In separate terminals:
-   cd apps/backend-api && yarn dev    # Start backend API
-   cd apps/mobile-app && yarn dev     # Start mobile app
-   ```
+```bash
+cd ../apps/backend-api
+yarn prisma migrate dev
+```
+This sets up the database tables.
 
-## Development Workflow
+---
 
-1. **Backend Development**:
-   - API endpoints in `apps/backend-api/src/routes/`
-   - Database schema in `apps/backend-api/prisma/schema.prisma`
-   - Run migrations: `yarn prisma migrate dev`
+### 6. **Start the Backend (API Server)**
 
-2. **Mobile Development**:
-   - Screens in `apps/mobile-app/src/screens/`
-   - Components in `apps/mobile-app/src/components/`
-   - API client in `apps/mobile-app/src/lib/api.ts`
+```bash
+yarn dev
+```
+Leave this terminal window open.
 
-## Current Features
+---
 
-### Backend
-- RESTful API endpoints
-- PostgreSQL database with Prisma
-- Basic error handling
-- CORS configuration
-- Development environment setup
+### 7. **Start the Mobile App**
 
-### Mobile App
-- Onboarding flow
-- Chapter reader
-- Reflection input
-- API integration
-- Environment configuration
+Open a new terminal window and run:
 
-## Next Steps
+```bash
+cd apps/mobile-app
+yarn start
+```
 
-### Backend
-1. Authentication & Authorization
-2. Input validation
-3. Error handling
-4. API documentation
-5. Testing setup
+- You'll see a QR code. Scan it with the Expo Go app on your phone, or press `i` (for iOS) or `a` (for Android) to open a simulator.
 
-### Mobile
-1. User authentication
-2. Error handling
-3. Loading states
-4. Offline support
-5. UI/UX improvements
+---
 
-## Troubleshooting
+## **How to Use the App**
 
-1. **Database Issues**:
-   ```bash
-   # Reset database
-   yarn prisma migrate reset
-   ```
+- Open the app on your phone or simulator.
+- Write your reflection and press "Get Guidance."
+- The AI will respond with personalized guidance, which will appear below your reflection.
 
-2. **Mobile App Issues**:
-   - Clear Metro bundler cache: `yarn expo start --clear`
-   - Check API URL in `.env`
+---
 
-3. **Backend Issues**:
-   - Check database connection
-   - Verify environment variables
-   - Check logs for errors
+## **Troubleshooting**
 
-## License
+- **If you see errors about missing environment variables:**  
+  Double-check your `.env` files.
+- **If the app can't connect to the backend:**  
+  Make sure the API URL in your mobile `.env` file matches your computer's IP address.
+- **If the database won't start:**  
+  Make sure Docker is running and no other database is using port 5432.
 
-[License details here]
+---
+
+## **For Developers**
+
+- All code is organized in the `apps/` folder.
+- The backend uses Express.js and Prisma.
+- The mobile app uses React Native and Expo.
+- See `.env.example` files for all required settings.
+
+---
+
+## **Need Help?**
+
+If you get stuck, ask your technical partner or open an issue in the project repository.

@@ -29,8 +29,8 @@ export const api = {
       if (!response.ok) {
         throw new Error(`API Error: ${response.status}`);
       }
-
-      return response.json();
+      const json = await response.json();
+      return json.data;
     } catch (error) {
       console.error('Error posting reflection:', error);
       throw error;
